@@ -1,17 +1,30 @@
+import { useState } from "react";
 import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { estilos } from "./estilos";
 import Participante from "../../componentes/Participante";
 
 export default function Inicio() {
-	const participantes = ["Rodrigo", "Vini", "Diego", "Biro", "Ana", "Isa", "Jack", "Mayk", "João"];
+	const [participantes, defParticipantes] = useState<string[]>([]);
+	const [participanteNome, defParticipanteNome] = useState<string>("");
 
 	function lidarAddParticipante() {
-		console.log("Você clicou no botão de adicionar");
+		if (participantes.includes(participanteNome)) {
+			Alert.alert("Participante existente", "Já existe um participante na lista com esse nome.");
+		} else {
+			defParticipantes((p) => [...p, participanteNome]);
+			defParticipanteNome("");
+		}
 	}
 	function lidarRemoverParticipante(nome: string) {
 		Alert.alert("Remover", `Você deseja remover ${nome}?`, [
 			{ text: "Não", style: "cancel" },
-			{ text: "Sim", onPress: () => Alert.alert("Removido!") },
+			{
+				text: "Sim",
+				onPress: () => {
+					defParticipantes((ps) => ps.filter((p) => p != nome));
+					Alert.alert("Removido!");
+				},
+			},
 		]);
 	}
 
@@ -26,6 +39,8 @@ export default function Inicio() {
 					placeholder="Nome do participante"
 					placeholderTextColor="#6b6b6b"
 					keyboardType="default"
+					onChangeText={defParticipanteNome}
+					value={participanteNome}
 				/>
 
 				<TouchableOpacity style={estilos.botao} onPress={lidarAddParticipante}>
