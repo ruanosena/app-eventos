@@ -36,4 +36,9 @@ export const estilos = StyleSheet.create({
 		marginTop: 36,
 		marginBottom: 42,
 	},
+	listaVaziaTexto: {
+		color: "#FFF",
+		fontSize: 16,
+		textAlign: "center",
+	},
 });
